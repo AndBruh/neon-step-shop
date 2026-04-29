@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeonStep - Премиальные кроссовки</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              base: "#f2f2f1",
+              ink: "#101010",
+              neon: "#00f5d4",
+              neonPink: "#ff4fd8",
+            },
+            boxShadow: {
+              neon: "0 0 25px rgba(0, 245, 212, 0.35)",
+              pink: "0 0 20px rgba(255, 79, 216, 0.28)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      @keyframes fade-up {
+        0% {
+          opacity: 0;
+          transform: translateY(26px);
+          filter: blur(2px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+      }
+
+      .appear {
+        opacity: 0;
+        animation: fade-up 0.8s ease forwards;
+      }
+
+      @keyframes media-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 rgba(0, 245, 212, 0);
+        }
+        50% {
+          transform: scale(1.02);
+          box-shadow: 0 0 24px rgba(0, 245, 212, 0.25);
+        }
+      }
+
+      .product-card:hover .product-media {
+        animation: media-pulse 1.25s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body class="bg-base text-ink antialiased">
+    <div class="min-h-screen bg-gradient-to-b from-base via-stone-100 to-zinc-100">
+      <header
+        class="appear mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6 md:px-10"
+        style="animation-delay: 0.1s"
+      >
+        <a href="#" class="group flex items-center gap-3">
+          <div
+            class="h-9 w-9 rounded-xl bg-ink text-base shadow-neon transition group-hover:scale-105"
+          >
+            <span class="grid h-full w-full place-items-center font-bold">N</span>
+          </div>
+          <span class="text-lg font-semibold tracking-wide">NeonStep</span>
+        </a>
+
+        <nav class="hidden items-center gap-8 text-sm font-medium md:flex">
+          <a id="nav-new-arrivals" class="transition hover:text-neonPink" href="#">Новинки</a>
+          <a id="nav-catalog" class="transition hover:text-neonPink" href="#">Каталог</a>
+          <a class="transition hover:text-neonPink" href="#">Коллекции</a>
+          <a class="transition hover:text-neonPink" href="#">Контакты</a>
+        </nav>
+
+        <button
+          class="flex items-center gap-2 rounded-full border border-zinc-300 bg-white/70 px-4 py-2 text-sm shadow-pink backdrop-blur transition hover:-translate-y-0.5 hover:border-neonPink"
+        >
+          <span>Корзина</span>
+          <span
+            id="cart-count"
+            class="rounded-full bg-ink px-2 py-0.5 text-xs text-white"
+            >0</span
+          >
+        </button>
+      </header>
+
+      <main class="mx-auto w-full max-w-6xl px-6 md:px-10">
+        <section
+          class="appear rounded-3xl border border-zinc-200 bg-white/60 p-8 shadow-neon backdrop-blur md:p-12"
+          style="animation-delay: 0.25s"
+        >
+          <p class="mb-4 inline-flex rounded-full bg-zinc-900 px-4 py-1 text-xs text-neon">
+            Премиум кроссовки нового сезона
+          </p>
+          <h1 class="max-w-3xl text-4xl font-semibold leading-tight md:text-6xl">
+            Выразительный стиль.
+            <span class="text-neonPink">Невероятный комфорт.</span>
+          </h1>
+          <p class="mt-5 max-w-2xl text-zinc-700 md:text-lg">
+            Эксклюзивные модели от ведущих брендов с идеальной посадкой и
+            технологичными материалами для города и активного ритма.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <button
+              id="catalog-scroll-btn"
+              class="rounded-full border border-white/60 bg-white/35 px-6 py-3 text-sm font-medium text-ink shadow-sm backdrop-blur-md transition hover:-translate-y-0.5 hover:border-neon hover:shadow-neon"
+            >
+              Смотреть каталог
+            </button>
+            <button
+              id="trends-scroll-btn"
+              class="rounded-full border border-white/60 bg-white/35 px-6 py-3 text-sm font-medium text-ink shadow-sm backdrop-blur-md transition hover:-translate-y-0.5 hover:border-neonPink hover:text-neonPink hover:shadow-pink"
+            >
+              Тренды недели
+            </button>
+          </div>
+        </section>
+
+        <section id="popular-models" class="py-14">
+          <div
+            class="appear mb-6 flex items-end justify-between"
+            style="animation-delay: 0.4s"
+          >
+            <h2 class="text-2xl font-semibold md:text-3xl">Популярные модели</h2>
+            <a class="text-sm text-zinc-600 transition hover:text-neonPink" href="#">
+              Все товары
+            </a>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-3">
+            <article
+              class="product-card appear rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-neon"
+              style="animation-delay: 0.5s"
+            >
+              <div class="product-media mb-4 flex h-44 items-center justify-center transition">
+                <img
+                  src="./nike.png?v=2"
+                  alt="Nike кроссовки"
+                  class="h-full w-auto object-contain mix-blend-multiply"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="text-lg font-medium">Aether Runner X1</h3>
+              <p class="mt-2 text-zinc-700">28 900 ₽</p>
+              <button
+                data-buy-button
+                data-model="Aether Runner X1"
+                class="mt-5 w-full rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+              >
+                Купить
+              </button>
+            </article>
+
+            <article
+              class="product-card appear rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-neon"
+              style="animation-delay: 0.6s"
+            >
+              <div
+                class="product-media mb-4 flex h-44 items-center justify-center rounded-xl bg-white transition"
+              >
+                <img
+                  src="./adidas.png"
+                  alt="Adidas кроссовки"
+                  class="h-full w-auto object-contain mix-blend-multiply"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="text-lg font-medium">Neon Drift Pro</h3>
+              <p class="mt-2 text-zinc-700">34 500 ₽</p>
+              <button
+                data-buy-button
+                data-model="Neon Drift Pro"
+                class="mt-5 w-full rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+              >
+                Купить
+              </button>
+            </article>
+
+            <article
+              class="product-card appear rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-neon"
+              style="animation-delay: 0.7s"
+            >
+              <div
+                class="product-media mb-4 flex h-44 items-center justify-center rounded-xl bg-white transition"
+              >
+                <img
+                  src="./r.png"
+                  alt="Кроссовки"
+                  class="h-full w-auto object-contain mix-blend-multiply"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="text-lg font-medium">Cloud Prime LX</h3>
+              <p class="mt-2 text-zinc-700">31 200 ₽</p>
+              <button
+                data-buy-button
+                data-model="Cloud Prime LX"
+                class="mt-5 w-full rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+              >
+                Купить
+              </button>
+            </article>
+          </div>
+        </section>
+
+        <section id="weekly-trends" class="pb-14">
+          <div
+            class="appear mb-6 flex items-end justify-between"
+            style="animation-delay: 0.78s"
+          >
+            <h2 class="text-2xl font-semibold md:text-3xl">Тренды недели</h2>
+            <span class="text-sm font-medium text-neonPink">Скоро релиз</span>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-3">
+            <article
+              class="appear rounded-2xl border border-zinc-200 bg-white/70 p-5 shadow-sm"
+              style="animation-delay: 0.82s"
+            >
+              <div
+                class="mb-4 flex h-44 items-center justify-center rounded-xl bg-zinc-300/80 backdrop-blur-md"
+              >
+                <p class="text-center text-2xl font-extrabold text-zinc-800">
+                  Скоро в продаже!
+                </p>
+              </div>
+              <h3 class="text-lg font-medium">Volt Phantom Elite</h3>
+              <p class="mt-2 text-zinc-700">Предзаказ скоро откроется</p>
+            </article>
+
+            <article
+              class="appear rounded-2xl border border-zinc-200 bg-white/70 p-5 shadow-sm"
+              style="animation-delay: 0.86s"
+            >
+              <div
+                class="mb-4 flex h-44 items-center justify-center rounded-xl bg-zinc-300/80 backdrop-blur-md"
+              >
+                <p class="text-center text-2xl font-extrabold text-zinc-800">
+                  Скоро в продаже!
+                </p>
+              </div>
+              <h3 class="text-lg font-medium">Aero Pulse 9</h3>
+              <p class="mt-2 text-zinc-700">Лимитированная коллекция</p>
+            </article>
+
+            <article
+              class="appear rounded-2xl border border-zinc-200 bg-white/70 p-5 shadow-sm"
+              style="animation-delay: 0.9s"
+            >
+              <div
+                class="mb-4 flex h-44 items-center justify-center rounded-xl bg-zinc-300/80 backdrop-blur-md"
+              >
+                <p class="text-center text-2xl font-extrabold text-zinc-800">
+                  Скоро в продаже!
+                </p>
+              </div>
+              <h3 class="text-lg font-medium">Street Nova GT</h3>
+              <p class="mt-2 text-zinc-700">Дроп следующей недели</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer
+        class="appear mt-6 border-t border-zinc-200 bg-white/50"
+        style="animation-delay: 0.85s"
+      >
+        <div
+          class="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-6 py-6 text-sm text-zinc-600 md:flex-row md:px-10"
+        >
+          <p>© 2026 NeonStep. Премиальные кроссовки.</p>
+          <div class="flex gap-5">
+            <a class="transition hover:text-neonPink" href="#">Instagram</a>
+            <a class="transition hover:text-neonPink" href="#">Telegram</a>
+            <a class="transition hover:text-neonPink" href="#">Support</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <div
+      id="toast"
+      class="pointer-events-none fixed right-6 top-6 z-50 translate-y-[-12px] opacity-0 transition duration-300"
+    >
+      <div
+        class="rounded-xl border border-neon/60 bg-white/90 px-4 py-2 text-sm text-ink shadow-neon backdrop-blur"
+      >
+        <span id="toast-message">Товар добавлен!</span>
+      </div>
+    </div>
+
+    <script>
+      const catalogScrollButton = document.getElementById("catalog-scroll-btn");
+      const trendsScrollButton = document.getElementById("trends-scroll-btn");
+      const navCatalogLink = document.getElementById("nav-catalog");
+      const navNewArrivalsLink = document.getElementById("nav-new-arrivals");
+      const popularModelsSection = document.getElementById("popular-models");
+      const weeklyTrendsSection = document.getElementById("weekly-trends");
+      const cartCountElement = document.getElementById("cart-count");
+      const buyButtons = document.querySelectorAll("[data-buy-button]");
+      const toastElement = document.getElementById("toast");
+      const toastMessageElement = document.getElementById("toast-message");
+      let toastTimeout;
+
+      catalogScrollButton?.addEventListener("click", () => {
+        popularModelsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      trendsScrollButton?.addEventListener("click", () => {
+        weeklyTrendsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      navCatalogLink?.addEventListener("click", (event) => {
+        event.preventDefault();
+        popularModelsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      navNewArrivalsLink?.addEventListener("click", (event) => {
+        event.preventDefault();
+        weeklyTrendsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      function showToast(modelName) {
+        toastMessageElement.textContent = `Добавлено: ${modelName}`;
+        toastElement.classList.remove("opacity-0", "translate-y-[-12px]");
+        toastElement.classList.add("opacity-100", "translate-y-0");
+
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toastElement.classList.remove("opacity-100", "translate-y-0");
+          toastElement.classList.add("opacity-0", "translate-y-[-12px]");
+        }, 1400);
+      }
+
+      buyButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const currentCount = Number(cartCountElement.textContent) || 0;
+          cartCountElement.textContent = String(currentCount + 1);
+          const modelName = button.dataset.model || "Товар";
+          showToast(modelName);
+        });
+      });
+    </script>
+  </body>
+</html>
