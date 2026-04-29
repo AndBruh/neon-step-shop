@@ -61,6 +61,108 @@
       .product-card:hover .product-media {
         animation: media-pulse 1.25s ease-in-out infinite;
       }
+
+      .cart-drawer-open #cart-overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .cart-drawer-open #cart-drawer {
+        transform: translateX(0);
+      }
+
+      .cart-item-removing {
+        opacity: 0;
+        transform: translateY(-8px);
+        max-height: 0;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        border-width: 0 !important;
+      }
+
+      .cart-item-row {
+        max-height: 130px;
+        overflow: hidden;
+        transition:
+          max-height 0.35s ease,
+          opacity 0.25s ease,
+          transform 0.25s ease,
+          margin 0.35s ease,
+          padding 0.35s ease,
+          border-width 0.3s ease;
+      }
+
+      .product-modal-open {
+        overflow: hidden;
+      }
+
+      .product-modal-open #product-modal-overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .product-modal-open #product-modal-card {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .favorites-panel-open #favorites-panel {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+
+      .favorite-item-row {
+        max-height: 130px;
+        overflow: hidden;
+        transition:
+          max-height 0.35s ease,
+          opacity 0.25s ease,
+          transform 0.25s ease,
+          margin 0.35s ease,
+          padding 0.35s ease,
+          border-width 0.3s ease;
+      }
+
+      .favorite-item-removing {
+        opacity: 0;
+        transform: translateY(-8px);
+        max-height: 0;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        border-width: 0 !important;
+      }
+
+      .favorite-btn .heart-icon {
+        transition:
+          transform 0.28s ease,
+          fill 0.28s ease,
+          stroke 0.28s ease;
+      }
+
+      .favorite-btn.is-active .heart-icon {
+        fill: #ef4444;
+        stroke: #ef4444;
+        transform: scale(1.1);
+      }
+
+      .checkout-success-open {
+        overflow: hidden;
+      }
+
+      .checkout-success-open #checkout-success-overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .checkout-success-open #checkout-success-modal {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     </style>
   </head>
   <body class="bg-base text-ink antialiased">
@@ -85,16 +187,30 @@
           <a class="transition hover:text-neonPink" href="#">Контакты</a>
         </nav>
 
-        <button
-          class="flex items-center gap-2 rounded-full border border-zinc-300 bg-white/70 px-4 py-2 text-sm shadow-pink backdrop-blur transition hover:-translate-y-0.5 hover:border-neonPink"
-        >
-          <span>Корзина</span>
-          <span
-            id="cart-count"
-            class="rounded-full bg-ink px-2 py-0.5 text-xs text-white"
-            >0</span
+        <div class="flex items-center gap-2">
+          <button
+            id="favorites-toggle-btn"
+            class="flex items-center gap-2 rounded-full border border-zinc-300 bg-white/70 px-4 py-2 text-sm shadow-pink backdrop-blur transition hover:-translate-y-0.5 hover:border-red-400"
           >
-        </button>
+            <span>Избранное</span>
+            <span
+              id="favorites-count"
+              class="rounded-full bg-white px-2 py-0.5 text-xs text-red-500 ring-1 ring-red-300"
+              >0</span
+            >
+          </button>
+          <button
+            id="cart-toggle-btn"
+            class="flex items-center gap-2 rounded-full border border-zinc-300 bg-white/70 px-4 py-2 text-sm shadow-pink backdrop-blur transition hover:-translate-y-0.5 hover:border-neonPink"
+          >
+            <span>Корзина</span>
+            <span
+              id="cart-count"
+              class="rounded-full bg-ink px-2 py-0.5 text-xs text-white"
+              >0</span
+            >
+          </button>
+        </div>
       </header>
 
       <main class="mx-auto w-full max-w-6xl px-6 md:px-10">
@@ -142,7 +258,8 @@
 
           <div class="grid gap-6 md:grid-cols-3">
             <article
-              class="product-card appear rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-neon"
+              data-product-card
+              class="product-card appear relative rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-neon"
               style="animation-delay: 0.5s"
             >
               <div class="product-media mb-4 flex h-44 items-center justify-center transition">
@@ -155,17 +272,36 @@
               </div>
               <h3 class="text-lg font-medium">Aether Runner X1</h3>
               <p class="mt-2 text-zinc-700">28 900 ₽</p>
-              <button
-                data-buy-button
-                data-model="Aether Runner X1"
-                class="mt-5 w-full rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
-              >
-                Купить
-              </button>
+              <div class="mt-5 flex items-center gap-2">
+                <button
+                  data-buy-button
+                  data-model="Aether Runner X1"
+                  data-price="28900"
+                  data-image="./nike.png?v=2"
+                  class="flex-1 rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+                >
+                  Купить
+                </button>
+                <button
+                  data-favorite-button
+                  data-model="Aether Runner X1"
+                  class="favorite-btn rounded-xl bg-white/85 p-2 ring-1 ring-red-400/80 transition hover:scale-105"
+                >
+                  <svg class="heart-icon h-5 w-5 fill-transparent stroke-red-500" viewBox="0 0 24 24">
+                    <path
+                      d="M12 20.2c-.2 0-.4-.07-.56-.2l-1.2-1.02C5.38 14.84 2.2 11.98 2.2 8.5A4.7 4.7 0 016.9 3.8c1.9 0 3.66.89 4.8 2.39a6.02 6.02 0 014.8-2.39 4.7 4.7 0 014.7 4.7c0 3.48-3.18 6.34-8.04 10.48l-1.2 1.02c-.16.13-.36.2-.56.2z"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
             </article>
 
             <article
-              class="product-card appear rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-neon"
+              data-product-card
+              class="product-card appear relative rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-neon"
               style="animation-delay: 0.6s"
             >
               <div
@@ -180,17 +316,36 @@
               </div>
               <h3 class="text-lg font-medium">Neon Drift Pro</h3>
               <p class="mt-2 text-zinc-700">34 500 ₽</p>
-              <button
-                data-buy-button
-                data-model="Neon Drift Pro"
-                class="mt-5 w-full rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
-              >
-                Купить
-              </button>
+              <div class="mt-5 flex items-center gap-2">
+                <button
+                  data-buy-button
+                  data-model="Neon Drift Pro"
+                  data-price="34500"
+                  data-image="./adidas.png"
+                  class="flex-1 rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+                >
+                  Купить
+                </button>
+                <button
+                  data-favorite-button
+                  data-model="Neon Drift Pro"
+                  class="favorite-btn rounded-xl bg-white/85 p-2 ring-1 ring-red-400/80 transition hover:scale-105"
+                >
+                  <svg class="heart-icon h-5 w-5 fill-transparent stroke-red-500" viewBox="0 0 24 24">
+                    <path
+                      d="M12 20.2c-.2 0-.4-.07-.56-.2l-1.2-1.02C5.38 14.84 2.2 11.98 2.2 8.5A4.7 4.7 0 016.9 3.8c1.9 0 3.66.89 4.8 2.39a6.02 6.02 0 014.8-2.39 4.7 4.7 0 014.7 4.7c0 3.48-3.18 6.34-8.04 10.48l-1.2 1.02c-.16.13-.36.2-.56.2z"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
             </article>
 
             <article
-              class="product-card appear rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-neon"
+              data-product-card
+              class="product-card appear relative rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-neon"
               style="animation-delay: 0.7s"
             >
               <div
@@ -205,13 +360,31 @@
               </div>
               <h3 class="text-lg font-medium">Cloud Prime LX</h3>
               <p class="mt-2 text-zinc-700">31 200 ₽</p>
-              <button
-                data-buy-button
-                data-model="Cloud Prime LX"
-                class="mt-5 w-full rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
-              >
-                Купить
-              </button>
+              <div class="mt-5 flex items-center gap-2">
+                <button
+                  data-buy-button
+                  data-model="Cloud Prime LX"
+                  data-price="31200"
+                  data-image="./sneaker.png"
+                  class="flex-1 rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+                >
+                  Купить
+                </button>
+                <button
+                  data-favorite-button
+                  data-model="Cloud Prime LX"
+                  class="favorite-btn rounded-xl bg-white/85 p-2 ring-1 ring-red-400/80 transition hover:scale-105"
+                >
+                  <svg class="heart-icon h-5 w-5 fill-transparent stroke-red-500" viewBox="0 0 24 24">
+                    <path
+                      d="M12 20.2c-.2 0-.4-.07-.56-.2l-1.2-1.02C5.38 14.84 2.2 11.98 2.2 8.5A4.7 4.7 0 016.9 3.8c1.9 0 3.66.89 4.8 2.39a6.02 6.02 0 014.8-2.39 4.7 4.7 0 014.7 4.7c0 3.48-3.18 6.34-8.04 10.48l-1.2 1.02c-.16.13-.36.2-.56.2z"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
             </article>
           </div>
         </section>
@@ -302,18 +475,529 @@
       </div>
     </div>
 
+    <div
+      id="cart-overlay"
+      class="pointer-events-none fixed inset-0 z-40 bg-black/25 opacity-0 transition-opacity duration-300"
+    ></div>
+
+    <aside
+      id="cart-drawer"
+      class="fixed right-3 top-3 z-50 flex h-[calc(100vh-1.5rem)] w-[calc(100%-1.5rem)] max-w-md translate-x-[110%] flex-col rounded-3xl border border-zinc-200/70 bg-white/90 shadow-[0_24px_65px_rgba(16,16,16,0.22)] backdrop-blur-xl transition-transform duration-300"
+    >
+      <div class="flex items-center justify-between border-b border-zinc-200/70 px-5 py-4">
+        <h3 class="text-lg font-semibold">Ваша корзина</h3>
+        <button
+          id="cart-close-btn"
+          class="rounded-full border border-zinc-300 px-3 py-1.5 text-sm transition hover:border-neonPink hover:text-neonPink"
+        >
+          Закрыть
+        </button>
+      </div>
+
+      <div id="cart-items" class="flex-1 overflow-y-auto px-5 py-4">
+        <p id="cart-empty" class="text-sm text-zinc-500">Корзина пока пустая.</p>
+      </div>
+
+      <div class="border-t border-zinc-200/70 px-5 py-4">
+        <div class="mb-4 flex items-center justify-between">
+          <span class="text-sm text-zinc-600">Итого:</span>
+          <span id="cart-total" class="text-lg font-semibold">0 ₽</span>
+        </div>
+        <button
+          id="checkout-btn"
+          class="w-full rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+        >
+          Оформить заказ
+        </button>
+      </div>
+    </aside>
+
+    <aside
+      id="favorites-panel"
+      class="pointer-events-none fixed right-6 top-24 z-[55] w-[min(360px,calc(100%-3rem))] scale-[0.98] rounded-3xl border border-zinc-200/70 bg-white/92 p-4 opacity-0 shadow-[0_24px_65px_rgba(16,16,16,0.22)] backdrop-blur-xl transition duration-300"
+    >
+      <div class="mb-3 flex items-center justify-between border-b border-zinc-200/70 pb-3">
+        <h3 class="text-base font-semibold">Избранное</h3>
+        <button
+          id="favorites-close-btn"
+          class="rounded-full border border-zinc-300 px-3 py-1 text-xs transition hover:border-red-400 hover:text-red-500"
+        >
+          Закрыть
+        </button>
+      </div>
+
+      <div id="favorites-items" class="max-h-[50vh] overflow-y-auto">
+        <p id="favorites-empty" class="text-sm text-zinc-500">Список избранного пуст.</p>
+      </div>
+    </aside>
+
+    <div
+      id="product-modal-overlay"
+      class="pointer-events-none fixed inset-0 z-[60] flex items-center justify-center bg-black/45 p-4 opacity-0 transition duration-300"
+    >
+      <div
+        id="product-modal-card"
+        class="max-h-[92vh] w-full max-w-5xl scale-[0.98] overflow-y-auto rounded-3xl border border-zinc-200/70 bg-white/95 p-5 opacity-0 shadow-[0_30px_80px_rgba(16,16,16,0.35)] backdrop-blur-xl transition duration-300 md:p-7"
+      >
+        <div class="mb-5 flex items-start justify-between gap-3">
+          <div>
+            <p id="modal-category-line" class="text-xs font-medium tracking-wide text-neonPink">
+              Премиум / Lifestyle
+            </p>
+            <h3 id="modal-title" class="mt-1 text-2xl font-semibold">Модель</h3>
+          </div>
+          <button
+            id="product-modal-close-btn"
+            class="rounded-full border border-zinc-300 px-3 py-1.5 text-sm transition hover:border-neonPink hover:text-neonPink"
+          >
+            Закрыть
+          </button>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-[1.1fr,1fr]">
+          <div class="rounded-3xl bg-zinc-100 p-4">
+            <img
+              id="modal-image"
+              src="./nike.png?v=2"
+              alt="Фото товара"
+              class="h-[320px] w-full rounded-2xl object-contain mix-blend-multiply md:h-[420px]"
+            />
+          </div>
+
+          <div class="flex flex-col">
+            <p id="modal-description" class="text-sm leading-relaxed text-zinc-700">
+              Детальное описание товара.
+            </p>
+
+            <div class="mt-5">
+              <p class="mb-2 text-sm font-semibold">Категории</p>
+              <div id="modal-tags" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="mt-5">
+              <p class="mb-2 text-sm font-semibold">Размерная сетка</p>
+              <div id="modal-sizes" class="grid grid-cols-4 gap-2"></div>
+            </div>
+
+            <div class="mt-6 rounded-2xl border border-zinc-200 bg-white p-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-zinc-600">Цена</span>
+                <span id="modal-price" class="text-xl font-semibold">0 ₽</span>
+              </div>
+              <button
+                id="modal-add-to-cart-btn"
+                class="mt-4 w-full rounded-xl bg-ink py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+              >
+                Добавить в корзину
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="checkout-success-overlay"
+      class="pointer-events-none fixed inset-0 z-[70] flex items-center justify-center bg-black/35 p-4 opacity-0 backdrop-blur-[2px] transition duration-300"
+    >
+      <div
+        id="checkout-success-modal"
+        class="w-full max-w-3xl scale-[0.98] rounded-[2rem] border border-neon/60 bg-white/95 p-8 opacity-0 shadow-[0_0_45px_rgba(0,245,212,0.35),0_24px_80px_rgba(16,16,16,0.3)] transition duration-300 md:p-12"
+      >
+        <div class="mb-5 inline-flex rounded-full bg-zinc-900 px-4 py-1 text-xs text-neon">
+          Заказ успешно создан
+        </div>
+        <p
+          id="checkout-success-message"
+          class="text-2xl font-semibold leading-tight text-zinc-900 md:text-3xl"
+        >
+          Заказ #000000 принят! Готовьте кеш, курьер уже шнурует кроссовки.
+        </p>
+        <div class="mt-8 flex justify-end">
+          <button
+            id="checkout-success-close-btn"
+            class="rounded-xl border border-zinc-300 px-5 py-2 text-sm font-medium transition hover:border-neonPink hover:text-neonPink"
+          >
+            Круто
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
+      const body = document.body;
+      const favoritesToggleButton = document.getElementById("favorites-toggle-btn");
+      const favoritesCloseButton = document.getElementById("favorites-close-btn");
+      const favoritesPanel = document.getElementById("favorites-panel");
+      const favoritesItemsContainer = document.getElementById("favorites-items");
+      const favoritesEmptyState = document.getElementById("favorites-empty");
+      const favoritesCountElement = document.getElementById("favorites-count");
+      const cartToggleButton = document.getElementById("cart-toggle-btn");
+      const cartCloseButton = document.getElementById("cart-close-btn");
+      const cartOverlay = document.getElementById("cart-overlay");
+      const cartItemsContainer = document.getElementById("cart-items");
+      const cartEmptyState = document.getElementById("cart-empty");
+      const cartTotalElement = document.getElementById("cart-total");
+      const checkoutButton = document.getElementById("checkout-btn");
       const catalogScrollButton = document.getElementById("catalog-scroll-btn");
       const trendsScrollButton = document.getElementById("trends-scroll-btn");
       const navCatalogLink = document.getElementById("nav-catalog");
       const navNewArrivalsLink = document.getElementById("nav-new-arrivals");
       const popularModelsSection = document.getElementById("popular-models");
       const weeklyTrendsSection = document.getElementById("weekly-trends");
+      const productCards = document.querySelectorAll("[data-product-card]");
+      const favoriteButtons = document.querySelectorAll("[data-favorite-button]");
       const cartCountElement = document.getElementById("cart-count");
       const buyButtons = document.querySelectorAll("[data-buy-button]");
       const toastElement = document.getElementById("toast");
       const toastMessageElement = document.getElementById("toast-message");
+      const productModalOverlay = document.getElementById("product-modal-overlay");
+      const productModalCard = document.getElementById("product-modal-card");
+      const productModalCloseButton = document.getElementById("product-modal-close-btn");
+      const modalTitleElement = document.getElementById("modal-title");
+      const modalCategoryLineElement = document.getElementById("modal-category-line");
+      const modalImageElement = document.getElementById("modal-image");
+      const modalDescriptionElement = document.getElementById("modal-description");
+      const modalTagsElement = document.getElementById("modal-tags");
+      const modalSizesElement = document.getElementById("modal-sizes");
+      const modalPriceElement = document.getElementById("modal-price");
+      const modalAddToCartButton = document.getElementById("modal-add-to-cart-btn");
+      const checkoutSuccessOverlay = document.getElementById("checkout-success-overlay");
+      const checkoutSuccessModal = document.getElementById("checkout-success-modal");
+      const checkoutSuccessMessage = document.getElementById("checkout-success-message");
+      const checkoutSuccessCloseButton = document.getElementById("checkout-success-close-btn");
+      const cart = new Map();
+      const favorites = new Map();
+      const CART_STORAGE_KEY = "neonstep_cart_v1";
+      const FAVORITES_STORAGE_KEY = "neonstep_favorites_v1";
+      let selectedModalProduct = null;
       let toastTimeout;
+
+      const productCatalog = {
+        "Aether Runner X1": {
+          model: "Aether Runner X1",
+          price: 28900,
+          image: "./nike.png?v=2",
+          description:
+            "Легкая премиальная модель для города и активного дня: амортизирующая подошва, дышащий верх и плотная фиксация пятки.",
+          categories: ["Lifestyle", "Running", "Premium"],
+          sizes: ["39", "40", "41", "42", "43", "44", "45"],
+          inStock: true,
+        },
+        "Neon Drift Pro": {
+          model: "Neon Drift Pro",
+          price: 34500,
+          image: "./adidas.png",
+          description:
+            "Технологичная модель с мягкой реактивной пеной и износостойким протектором. Идеальна для long-walk и street fit.",
+          categories: ["Streetwear", "Sport", "Limited"],
+          sizes: ["38", "39", "40", "41", "42", "43", "44"],
+          inStock: true,
+        },
+        "Cloud Prime LX": {
+          model: "Cloud Prime LX",
+          price: 31200,
+          image: "./sneaker.png",
+          description:
+            "Универсальный силуэт с упругой платформой и комфортной колодкой. Сочетает премиальный внешний вид и ежедневную практичность.",
+          categories: ["Urban", "Comfort", "New Drop"],
+          sizes: ["40", "41", "42", "43", "44", "45", "46"],
+          inStock: false,
+        },
+      };
+
+      function formatPrice(price) {
+        return `${new Intl.NumberFormat("ru-RU").format(price)} ₽`;
+      }
+
+      function saveStateToStorage() {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(Array.from(cart.entries())));
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(Array.from(favorites.entries())));
+      }
+
+      function loadStateFromStorage() {
+        try {
+          const savedCartRaw = localStorage.getItem(CART_STORAGE_KEY);
+          const savedFavoritesRaw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+
+          if (savedCartRaw) {
+            const savedCart = JSON.parse(savedCartRaw);
+            if (Array.isArray(savedCart)) {
+              savedCart.forEach(([modelName, item]) => {
+                if (!modelName || !item) return;
+                cart.set(modelName, item);
+              });
+            }
+          }
+
+          if (savedFavoritesRaw) {
+            const savedFavorites = JSON.parse(savedFavoritesRaw);
+            if (Array.isArray(savedFavorites)) {
+              savedFavorites.forEach(([modelName, item]) => {
+                if (!modelName || !item) return;
+                favorites.set(modelName, item);
+              });
+            }
+          }
+        } catch (error) {
+          localStorage.removeItem(CART_STORAGE_KEY);
+          localStorage.removeItem(FAVORITES_STORAGE_KEY);
+          cart.clear();
+          favorites.clear();
+        }
+      }
+
+      function openCartDrawer() {
+        body.classList.add("cart-drawer-open");
+      }
+
+      function closeCartDrawer() {
+        body.classList.remove("cart-drawer-open");
+      }
+
+      function openFavoritesPanel() {
+        body.classList.add("favorites-panel-open");
+      }
+
+      function closeFavoritesPanel() {
+        body.classList.remove("favorites-panel-open");
+      }
+
+      function openProductModal(product) {
+        selectedModalProduct = product;
+        modalTitleElement.textContent = product.model;
+        modalCategoryLineElement.textContent = `Категории: ${product.categories.join(" / ")}`;
+        modalImageElement.src = product.image;
+        modalImageElement.alt = product.model;
+        modalDescriptionElement.textContent = product.description;
+        modalPriceElement.textContent = formatPrice(product.price);
+
+        modalTagsElement.innerHTML = "";
+        product.categories.forEach((tag) => {
+          const chip = document.createElement("span");
+          chip.className =
+            "rounded-full border border-zinc-300 bg-white px-3 py-1 text-xs font-medium text-zinc-700";
+          chip.textContent = tag;
+          modalTagsElement.appendChild(chip);
+        });
+
+        modalSizesElement.innerHTML = "";
+        product.sizes.forEach((size) => {
+          const sizeChip = document.createElement("span");
+          sizeChip.className =
+            "rounded-lg border border-zinc-300 bg-white px-2 py-1 text-center text-sm font-medium";
+          sizeChip.textContent = size;
+          modalSizesElement.appendChild(sizeChip);
+        });
+
+        body.classList.add("product-modal-open");
+      }
+
+      function closeProductModal() {
+        body.classList.remove("product-modal-open");
+      }
+
+      function closeCheckoutSuccessModal() {
+        body.classList.remove("checkout-success-open");
+      }
+
+      function openCheckoutSuccessModal() {
+        const randomOrderNumber = Math.floor(100000 + Math.random() * 900000);
+        checkoutSuccessMessage.textContent = `Заказ #${randomOrderNumber} принят! Готовьте кеш, курьер уже шнурует кроссовки.`;
+        closeCartDrawer();
+        body.classList.add("checkout-success-open");
+      }
+
+      function getTotalItems() {
+        let total = 0;
+        cart.forEach((item) => {
+          total += item.quantity;
+        });
+        return total;
+      }
+
+      function getTotalPrice() {
+        let total = 0;
+        cart.forEach((item) => {
+          total += item.quantity * item.price;
+        });
+        return total;
+      }
+
+      function updateCartSummary() {
+        cartCountElement.textContent = String(getTotalItems());
+        cartTotalElement.textContent = formatPrice(getTotalPrice());
+      }
+
+      function updateFavoritesSummary() {
+        favoritesCountElement.textContent = String(favorites.size);
+      }
+
+      function updateFavoriteButtonsState() {
+        favoriteButtons.forEach((button) => {
+          const modelName = button.dataset.model || "";
+          button.classList.toggle("is-active", favorites.has(modelName));
+        });
+      }
+
+      function addToCart(modelName, itemPrice, itemImage) {
+        if (cart.has(modelName)) {
+          cart.get(modelName).quantity += 1;
+        } else {
+          cart.set(modelName, {
+            model: modelName,
+            price: itemPrice,
+            image: itemImage,
+            quantity: 1,
+          });
+        }
+
+        renderCartItems();
+        showToast(modelName);
+      }
+
+      function renderCartItems() {
+        if (cart.size === 0) {
+          const existingItems = cartItemsContainer.querySelectorAll("[data-cart-item]");
+          existingItems.forEach((element) => element.remove());
+          cartEmptyState.classList.remove("hidden");
+          updateCartSummary();
+          return;
+        }
+
+        cartEmptyState.classList.add("hidden");
+        const renderedItems = new Map();
+        cartItemsContainer.querySelectorAll("[data-cart-item]").forEach((element) => {
+          renderedItems.set(element.dataset.cartItem, element);
+        });
+
+        cart.forEach((item) => {
+          let row = renderedItems.get(item.model);
+          if (!row) {
+            row = document.createElement("div");
+            row.dataset.cartItem = item.model;
+            row.className =
+              "cart-item-row mb-3 flex items-center gap-3 rounded-xl border border-zinc-200 bg-white/90 p-3";
+            row.innerHTML = `
+            <img src="${item.image}" alt="${item.model}" class="h-14 w-14 rounded-md object-contain bg-white" />
+            <div class="min-w-0 flex-1">
+              <p class="cart-item-model truncate text-sm font-semibold">${item.model}</p>
+              <p class="cart-item-price text-sm text-zinc-600">${formatPrice(item.price)}</p>
+            </div>
+            <div class="flex items-center gap-1">
+              <button data-action="decrease" data-model="${item.model}" class="h-7 w-7 rounded-md border border-zinc-300 text-sm transition hover:border-neonPink">-</button>
+              <span class="cart-item-qty w-7 text-center text-sm">${item.quantity}</span>
+              <button data-action="increase" data-model="${item.model}" class="h-7 w-7 rounded-md border border-zinc-300 text-sm transition hover:border-neonPink">+</button>
+            </div>
+            <button data-action="remove" data-model="${item.model}" class="ml-1 rounded-md px-2 py-1 text-xs text-zinc-500 transition hover:text-neonPink">
+              Удалить
+            </button>
+          `;
+            cartItemsContainer.appendChild(row);
+          } else {
+            renderedItems.delete(item.model);
+            const qtyElement = row.querySelector(".cart-item-qty");
+            const priceElement = row.querySelector(".cart-item-price");
+            if (qtyElement) qtyElement.textContent = String(item.quantity);
+            if (priceElement) priceElement.textContent = formatPrice(item.price);
+          }
+        });
+
+        renderedItems.forEach((orphanRow) => orphanRow.remove());
+
+        updateCartSummary();
+        saveStateToStorage();
+      }
+
+      function removeCartItemWithAnimation(modelName) {
+        const row = cartItemsContainer.querySelector(`[data-cart-item="${modelName}"]`);
+        if (!row) {
+          cart.delete(modelName);
+          renderCartItems();
+          return;
+        }
+
+        row.classList.add("cart-item-removing");
+        setTimeout(() => {
+          cart.delete(modelName);
+          row.remove();
+          renderCartItems();
+        }, 340);
+      }
+
+      function renderFavoritesItems() {
+        if (favorites.size === 0) {
+          favoritesItemsContainer
+            .querySelectorAll("[data-favorite-item]")
+            .forEach((element) => element.remove());
+          favoritesEmptyState.classList.remove("hidden");
+          updateFavoritesSummary();
+          updateFavoriteButtonsState();
+          return;
+        }
+
+        favoritesEmptyState.classList.add("hidden");
+        const renderedItems = new Map();
+        favoritesItemsContainer.querySelectorAll("[data-favorite-item]").forEach((element) => {
+          renderedItems.set(element.dataset.favoriteItem, element);
+        });
+
+        favorites.forEach((item) => {
+          let row = renderedItems.get(item.model);
+          const statusText = item.inStock ? "В продаже" : "Нет в продаже";
+          const statusClass = item.inStock
+            ? "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200"
+            : "bg-zinc-200 text-zinc-600 ring-1 ring-zinc-300";
+
+          if (!row) {
+            row = document.createElement("div");
+            row.dataset.favoriteItem = item.model;
+            row.className =
+              "favorite-item-row mb-3 flex items-center gap-3 rounded-xl border border-zinc-200 bg-white/90 p-3";
+            row.innerHTML = `
+              <img src="${item.image}" alt="${item.model}" class="h-12 w-12 rounded-md object-contain bg-white" />
+              <div class="min-w-0 flex-1">
+                <p class="truncate text-sm font-semibold">${item.model}</p>
+                <span class="favorite-status mt-1 inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${statusClass}">
+                  ${statusText}
+                </span>
+              </div>
+              <button data-favorite-remove="${item.model}" class="rounded-md px-2 py-1 text-xs text-zinc-500 transition hover:text-red-500">
+                Удалить
+              </button>
+            `;
+            favoritesItemsContainer.appendChild(row);
+          } else {
+            renderedItems.delete(item.model);
+            const statusElement = row.querySelector(".favorite-status");
+            if (statusElement) {
+              statusElement.textContent = statusText;
+              statusElement.className = `favorite-status mt-1 inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${statusClass}`;
+            }
+          }
+        });
+
+        renderedItems.forEach((orphanRow) => orphanRow.remove());
+        updateFavoritesSummary();
+        updateFavoriteButtonsState();
+        saveStateToStorage();
+      }
+
+      function removeFavoriteWithAnimation(modelName) {
+        const row = favoritesItemsContainer.querySelector(`[data-favorite-item="${modelName}"]`);
+        if (!row) {
+          favorites.delete(modelName);
+          renderFavoritesItems();
+          return;
+        }
+
+        row.classList.add("favorite-item-removing");
+        setTimeout(() => {
+          favorites.delete(modelName);
+          row.remove();
+          renderFavoritesItems();
+        }, 340);
+      }
 
       catalogScrollButton?.addEventListener("click", () => {
         popularModelsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -333,6 +1017,49 @@
         weeklyTrendsSection?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
 
+      cartToggleButton?.addEventListener("click", openCartDrawer);
+      cartCloseButton?.addEventListener("click", closeCartDrawer);
+      cartOverlay?.addEventListener("click", closeCartDrawer);
+      favoritesToggleButton?.addEventListener("click", () => {
+        if (body.classList.contains("favorites-panel-open")) {
+          closeFavoritesPanel();
+        } else {
+          openFavoritesPanel();
+        }
+      });
+      favoritesCloseButton?.addEventListener("click", closeFavoritesPanel);
+      productModalCloseButton?.addEventListener("click", closeProductModal);
+      checkoutButton?.addEventListener("click", () => {
+        if (cart.size === 0) return;
+        openCheckoutSuccessModal();
+      });
+      checkoutSuccessCloseButton?.addEventListener("click", closeCheckoutSuccessModal);
+      checkoutSuccessOverlay?.addEventListener("click", (event) => {
+        if (event.target === checkoutSuccessOverlay) {
+          closeCheckoutSuccessModal();
+        }
+      });
+      productModalOverlay?.addEventListener("click", (event) => {
+        if (event.target === productModalOverlay) {
+          closeProductModal();
+        }
+      });
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        if (!body.classList.contains("favorites-panel-open")) return;
+        if (target.closest("#favorites-panel") || target.closest("#favorites-toggle-btn")) return;
+        closeFavoritesPanel();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeProductModal();
+          closeFavoritesPanel();
+          closeCheckoutSuccessModal();
+        }
+      });
+
       function showToast(modelName) {
         toastMessageElement.textContent = `Добавлено: ${modelName}`;
         toastElement.classList.remove("opacity-0", "translate-y-[-12px]");
@@ -347,12 +1074,103 @@
 
       buyButtons.forEach((button) => {
         button.addEventListener("click", () => {
-          const currentCount = Number(cartCountElement.textContent) || 0;
-          cartCountElement.textContent = String(currentCount + 1);
           const modelName = button.dataset.model || "Товар";
-          showToast(modelName);
+          const itemPrice = Number(button.dataset.price) || 0;
+          const itemImage = button.dataset.image || "";
+          addToCart(modelName, itemPrice, itemImage);
         });
       });
+
+      productCards.forEach((card) => {
+        card.addEventListener("click", (event) => {
+          const target = event.target;
+          if (
+            target instanceof Element &&
+            (target.closest("[data-buy-button]") || target.closest("[data-favorite-button]"))
+          ) {
+            return;
+          }
+
+          const buyButton = card.querySelector("[data-buy-button]");
+          if (!(buyButton instanceof HTMLElement)) return;
+
+          const modelName = buyButton.dataset.model || "";
+          const product = productCatalog[modelName];
+          if (!product) return;
+
+          openProductModal(product);
+        });
+      });
+
+      favoriteButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          const modelName = button.dataset.model || "";
+          const product = productCatalog[modelName];
+          if (!product) return;
+
+          if (favorites.has(modelName)) {
+            favorites.delete(modelName);
+          } else {
+            favorites.set(modelName, {
+              model: product.model,
+              image: product.image,
+              inStock: product.inStock,
+            });
+          }
+
+          renderFavoritesItems();
+        });
+      });
+
+      modalAddToCartButton?.addEventListener("click", () => {
+        if (!selectedModalProduct) return;
+        addToCart(selectedModalProduct.model, selectedModalProduct.price, selectedModalProduct.image);
+      });
+
+      cartItemsContainer?.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+
+        const action = target.dataset.action;
+        const modelName = target.dataset.model;
+        if (!action || !modelName || !cart.has(modelName)) return;
+
+        if (action === "increase") {
+          cart.get(modelName).quantity += 1;
+          renderCartItems();
+          return;
+        }
+
+        if (action === "decrease") {
+          const item = cart.get(modelName);
+          if (item.quantity > 1) {
+            item.quantity -= 1;
+            renderCartItems();
+          } else {
+            removeCartItemWithAnimation(modelName);
+          }
+          return;
+        }
+
+        if (action === "remove") {
+          removeCartItemWithAnimation(modelName);
+        }
+      });
+
+      favoritesItemsContainer?.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+
+        const modelName = target.dataset.favoriteRemove;
+        if (!modelName || !favorites.has(modelName)) return;
+        removeFavoriteWithAnimation(modelName);
+      });
+
+      loadStateFromStorage();
+      renderCartItems();
+      renderFavoritesItems();
     </script>
   </body>
 </html>
