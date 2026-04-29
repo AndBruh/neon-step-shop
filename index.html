@@ -804,6 +804,8 @@
       function openCheckoutSuccessModal() {
         const randomOrderNumber = Math.floor(100000 + Math.random() * 900000);
         checkoutSuccessMessage.textContent = `Заказ #${randomOrderNumber} принят! Готовьте кеш, курьер уже шнурует кроссовки.`;
+        cart.clear();
+        renderCartItems();
         closeCartDrawer();
         body.classList.add("checkout-success-open");
       }
